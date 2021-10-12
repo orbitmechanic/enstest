@@ -1,23 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+import ENSAddress from "@ensdomains/react-ens-address";
+import { useMoralis } from "react-moralis";
+import { useEffect } from "react";
 
 function App() {
+  const { web3, enableWeb3, isWeb3Enabled } = useMoralis();
+
+  useEffect(() => {
+    if (!isWeb3Enabled) {
+      enableWeb3();
+    }
+  }, [isWeb3Enabled, enableWeb3]);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {isWeb3Enabled && (
+        <ENSAddress provider={web3.givenProvider || web3.currentProvider} />
+      )}
+      <p>Orbiter.</p>
     </div>
   );
 }
